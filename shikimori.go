@@ -203,3 +203,92 @@ func GetMangaRelatedObjects(id int) ([]RelatedObject, error) {
 	}
 	return relatedobject, nil
 }
+
+// * Ranobe
+
+// GetRanobes ...
+func GetRanobes(query SearchParams) ([]Ranobe, error) {
+	v := url.Values{}
+	// TODO: Add muti-params support
+	v.Set("page", strconv.Itoa(query.Page))
+	v.Set("limit", strconv.Itoa(query.Limit))
+	v.Set("order", query.Order)
+	v.Set("kind ", query.Kind)
+	v.Set("status", query.Status)
+	v.Set("season", query.Season)
+	v.Set("score", fmt.Sprintf("%f", query.Score))
+	v.Set("duration", query.Duration)
+	v.Set("rating", query.Rating)
+	v.Set("genre", strconv.Itoa(query.Genre))
+	v.Set("studio", strconv.Itoa(query.Studio))
+	v.Set("franchise", query.Franchise)
+	v.Set("censoured", fmt.Sprintf("%t", query.Censoured))
+	v.Set("ids", strconv.Itoa(query.IDs))
+	v.Set("exclude_ids", strconv.Itoa(query.ExcludeIDs))
+	v.Set("search", query.Search)
+
+	resp, err := http.Get("https://shikimori.one/api/ranobe" + v.Encode())
+	if err != nil {
+		return []Ranobe{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []Ranobe{}, err
+	}
+	ranobe := []Ranobe{}
+	if err := json.Unmarshal(body, &ranobe); err != nil {
+		return nil, err
+	}
+	return ranobe, nil
+}
+
+// GetRanobeID ...
+func GetRanobeID(id int) (Ranobe, error) {
+	resp, err := http.Get("https://shikimori.one/api/ranobe/" + strconv.Itoa(id))
+	if err != nil {
+		return Ranobe{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return Ranobe{}, err
+	}
+	ranobe := Ranobe{}
+	if err := json.Unmarshal(body, &ranobe); err != nil {
+		return Ranobe{}, err
+	}
+	return ranobe, nil
+}
+
+// GetSimilarRanobe ...
+func GetSimilarRanobe(id int) ([]Ranobe, error) {
+	resp, err := http.Get("https://shikimori.one/api/ranobe/" + strconv.Itoa(id) + "/similar")
+	if err != nil {
+		return []Ranobe{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []Ranobe{}, err
+	}
+	ranobe := []Ranobe{}
+	if err := json.Unmarshal(body, &ranobe); err != nil {
+		return []Ranobe{}, err
+	}
+	return ranobe, nil
+}
+
+// GetRanobeRelatedObjects ...
+func GetRanobeRelatedObjects(id int) ([]RelatedObject, error) {
+	resp, err := http.Get("https://shikimori.one/api/ranobe/" + strconv.Itoa(id) + "/related")
+	if err != nil {
+		return []RelatedObject{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []RelatedObject{}, err
+	}
+	relatedobject := []RelatedObject{}
+	if err := json.Unmarshal(body, &relatedobject); err != nil {
+		return []RelatedObject{}, err
+	}
+	return relatedobject, nil
+}
