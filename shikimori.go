@@ -100,7 +100,7 @@ func GetAnimeRelatedObjects(id int) ([]RelatedObject, error) {
 
 // GetAnimeScreenshots ...
 func GetAnimeScreenshots(id int) ([]Image, error) {
-	resp, err := http.Get("https://shikimori.one/api/animes/" + strconv.Itoa(id) + "/screenshots ")
+	resp, err := http.Get("https://shikimori.one/api/animes/" + strconv.Itoa(id) + "/screenshots")
 	if err != nil {
 		return []Image{}, err
 	}
