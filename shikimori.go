@@ -9,26 +9,28 @@ import (
 	"strconv"
 )
 
+// * Anime
+
 // GetAnimes ...
-func GetAnimes(query AnimeParams) ([]Anime, error) {
+func GetAnimes(query SearchParams) ([]Anime, error) {
 	v := url.Values{}
 	// TODO: Add muti-params support
-	v.Set("Page", strconv.Itoa(query.Page))
-	v.Set("Limit", strconv.Itoa(query.Limit))
-	v.Set("Order", query.Order)
-	v.Set("Kind ", query.Kind)
-	v.Set("Status", query.Status)
-	v.Set("Season", query.Season)
-	v.Set("Score", fmt.Sprintf("%f", query.Score))
-	v.Set("Duration", query.Duration)
-	v.Set("Rating", query.Rating)
-	v.Set("Genre", strconv.Itoa(query.Genre))
-	v.Set("Studio", strconv.Itoa(query.Studio))
-	v.Set("Franchise", query.Franchise)
-	v.Set("Censoured", fmt.Sprintf("%t", query.Censoured))
-	v.Set("IDs", strconv.Itoa(query.IDs))
-	v.Set("ExcludeIDs", strconv.Itoa(query.ExcludeIDs))
-	v.Set("Search", query.Search)
+	v.Set("page", strconv.Itoa(query.Page))
+	v.Set("limit", strconv.Itoa(query.Limit))
+	v.Set("order", query.Order)
+	v.Set("kind ", query.Kind)
+	v.Set("status", query.Status)
+	v.Set("season", query.Season)
+	v.Set("score", fmt.Sprintf("%f", query.Score))
+	v.Set("duration", query.Duration)
+	v.Set("rating", query.Rating)
+	v.Set("genre", strconv.Itoa(query.Genre))
+	v.Set("studio", strconv.Itoa(query.Studio))
+	v.Set("franchise", query.Franchise)
+	v.Set("censoured", fmt.Sprintf("%t", query.Censoured))
+	v.Set("ids", strconv.Itoa(query.IDs))
+	v.Set("exclude_ids", strconv.Itoa(query.ExcludeIDs))
+	v.Set("search", query.Search)
 
 	resp, err := http.Get("https://shikimori.one/api/animes" + v.Encode())
 	if err != nil {
@@ -45,8 +47,8 @@ func GetAnimes(query AnimeParams) ([]Anime, error) {
 	return anime, nil
 }
 
-// GetAnimesID ...
-func GetAnimesID(id int) (Anime, error) {
+// GetAnimeID ...
+func GetAnimeID(id int) (Anime, error) {
 	resp, err := http.Get("https://shikimori.one/api/animes/" + strconv.Itoa(id))
 	if err != nil {
 		return Anime{}, err
@@ -60,4 +62,144 @@ func GetAnimesID(id int) (Anime, error) {
 		return Anime{}, err
 	}
 	return anime, nil
+}
+
+// GetSimilarAnime ...
+func GetSimilarAnime(id int) ([]Anime, error) {
+	resp, err := http.Get("https://shikimori.one/api/animes/" + strconv.Itoa(id) + "/similar")
+	if err != nil {
+		return []Anime{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []Anime{}, err
+	}
+	anime := []Anime{}
+	if err := json.Unmarshal(body, &anime); err != nil {
+		return []Anime{}, err
+	}
+	return anime, nil
+}
+
+// GetAnimeRelatedObjects ...
+func GetAnimeRelatedObjects(id int) ([]RelatedObject, error) {
+	resp, err := http.Get("https://shikimori.one/api/animes/" + strconv.Itoa(id) + "/related")
+	if err != nil {
+		return []RelatedObject{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []RelatedObject{}, err
+	}
+	anime := []RelatedObject{}
+	if err := json.Unmarshal(body, &anime); err != nil {
+		return []RelatedObject{}, err
+	}
+	return anime, nil
+}
+
+// GetAnimeScreenshots ...
+func GetAnimeScreenshots(id int) ([]Image, error) {
+	resp, err := http.Get("https://shikimori.one/api/animes/" + strconv.Itoa(id) + "/screenshots ")
+	if err != nil {
+		return []Image{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []Image{}, err
+	}
+	anime := []Image{}
+	if err := json.Unmarshal(body, &anime); err != nil {
+		return []Image{}, err
+	}
+	return anime, nil
+}
+
+// * Mangas
+
+// GetMangas ...
+func GetMangas(query SearchParams) ([]Manga, error) {
+	v := url.Values{}
+	// TODO: Add muti-params support
+	v.Set("page", strconv.Itoa(query.Page))
+	v.Set("limit", strconv.Itoa(query.Limit))
+	v.Set("order", query.Order)
+	v.Set("kind ", query.Kind)
+	v.Set("status", query.Status)
+	v.Set("season", query.Season)
+	v.Set("score", fmt.Sprintf("%f", query.Score))
+	v.Set("duration", query.Duration)
+	v.Set("rating", query.Rating)
+	v.Set("genre", strconv.Itoa(query.Genre))
+	v.Set("studio", strconv.Itoa(query.Studio))
+	v.Set("franchise", query.Franchise)
+	v.Set("censoured", fmt.Sprintf("%t", query.Censoured))
+	v.Set("ids", strconv.Itoa(query.IDs))
+	v.Set("exclude_ids", strconv.Itoa(query.ExcludeIDs))
+	v.Set("search", query.Search)
+
+	resp, err := http.Get("https://shikimori.one/api/mangas" + v.Encode())
+	if err != nil {
+		return []Manga{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []Manga{}, err
+	}
+	manga := []Manga{}
+	if err := json.Unmarshal(body, &manga); err != nil {
+		return nil, err
+	}
+	return manga, nil
+}
+
+// GetMangaID ...
+func GetMangaID(id int) (Manga, error) {
+	resp, err := http.Get("https://shikimori.one/api/mangas/" + strconv.Itoa(id))
+	if err != nil {
+		return Manga{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return Manga{}, err
+	}
+	manga := Manga{}
+	if err := json.Unmarshal(body, &manga); err != nil {
+		return Manga{}, err
+	}
+	return manga, nil
+}
+
+// GetSimilarManga ...
+func GetSimilarManga(id int) ([]Manga, error) {
+	resp, err := http.Get("https://shikimori.one/api/mangas/" + strconv.Itoa(id) + "/similar")
+	if err != nil {
+		return []Manga{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []Manga{}, err
+	}
+	manga := []Manga{}
+	if err := json.Unmarshal(body, &manga); err != nil {
+		return []Manga{}, err
+	}
+	return manga, nil
+}
+
+// GetMangaRelatedObjects ...
+func GetMangaRelatedObjects(id int) ([]RelatedObject, error) {
+	resp, err := http.Get("https://shikimori.one/api/mangas/" + strconv.Itoa(id) + "/related")
+	if err != nil {
+		return []RelatedObject{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []RelatedObject{}, err
+	}
+	relatedobject := []RelatedObject{}
+	if err := json.Unmarshal(body, &relatedobject); err != nil {
+		return []RelatedObject{}, err
+	}
+	return relatedobject, nil
 }

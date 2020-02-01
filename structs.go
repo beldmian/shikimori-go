@@ -83,8 +83,8 @@ type Studio struct {
 	Image        Image  `json:"image,omitempty"`
 }
 
-// AnimeParams ...
-type AnimeParams struct {
+// SearchParams ...
+type SearchParams struct {
 	Page       int
 	Limit      int
 	Order      string
@@ -101,4 +101,30 @@ type AnimeParams struct {
 	IDs        int
 	ExcludeIDs int
 	Search     string
+}
+
+// RelatedObject ...
+type RelatedObject struct {
+	Relation        string `json:"relation,omitempty"`
+	RelationRussian string `json:"relation_russian,omitempty"`
+	Anime           Anime  `json:"anime,omitempty"`
+	Manga           Manga  `json:"manga,omitempty"`
+}
+
+// * Mangas
+
+// Manga ...
+type Manga struct {
+	ID         int    `json:"id,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Russian    string `json:"russian,omitempty"`
+	Image      Image  `json:"image,omitempty"`
+	URL        string `json:"url,omitempty"`
+	Kind       string `json:"kind,omitempty"`
+	Score      string `json:"score,omitempty"`
+	Status     string `json:"status,omitempty"`
+	Volumes    string `json:"volumes,omitempty"`
+	Chapters   string `json:"chapters,omitempty"`
+	AiredOn    string `json:"aired_on,omitempty"`
+	ReleasedOn string `json:"released_on,omitempty"`
 }
