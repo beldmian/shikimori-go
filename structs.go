@@ -115,72 +115,78 @@ type RelatedObject struct {
 
 // Manga ...
 type Manga struct {
-	ID                 int      `json:"id,omitempty"`
-	Name               string   `json:"name,omitempty"`
-	Russian            string   `json:"russian,omitempty"`
-	Image              Image    `json:"image,omitempty"`
-	URL                string   `json:"url,omitempty"`
-	Kind               string   `json:"kind,omitempty"`
-	Score              string   `json:"score,omitempty"`
-	Status             string   `json:"status,omitempty"`
-	Volumes            int      `json:"volumes,omitempty"`
-	Chapters           int      `json:"chapters,omitempty"`
-	AiredOn            string   `json:"aired_on,omitempty"`
-	ReleasedOn         string   `json:"released_on,omitempty"`
-	English            []string `json:"english,omitempty"`
-	Japanese           []string `json:"japanese,omitempty"`
-	Synonyms           []string `json:"synonyms,omitempty"`
-	LicenseNameRu      string   `json:"license_name_ru,omitempty"`
-	Description        string   `json:"description,omitempty"`
-	DescriptionHTML    string   `json:"description_html,omitempty"`
-	DescriptionSource  string   `json:"description_source,omitempty"`
-	Franchise          string   `json:"franchise,omitempty"`
-	Favoured           bool     `json:"favoured,omitempty"`
-	Anons              string   `json:"anons,omitempty"`
-	Ongoing            string   `json:"ongoing,omitempty"`
-	ThreadID           int      `json:"thread_id,omitempty"`
-	TopicID            int      `json:"topic_id,omitempty"`
-	MyanimelistID      int      `json:"myanimelist_id,omitempty"`
-	RatesScoresStats   []string `json:"rates_scores_stats,omitempty"`
-	RatesStatusesStats []string `json:"rates_statuses_stats,omitempty"`
-	Genres             []string `json:"genres,omitempty"`
-	Publishers         []string `json:"publishers,omitempty"`
-	UserRate           string   `json:"user_rate,omitempty"`
+	ID                 int         `json:"id,omitempty"`
+	Name               string      `json:"name,omitempty"`
+	Russian            string      `json:"russian,omitempty"`
+	Image              Image       `json:"image,omitempty"`
+	URL                string      `json:"url,omitempty"`
+	Kind               string      `json:"kind,omitempty"`
+	Score              string      `json:"score,omitempty"`
+	Status             string      `json:"status,omitempty"`
+	Volumes            int         `json:"volumes,omitempty"`
+	Chapters           int         `json:"chapters,omitempty"`
+	AiredOn            string      `json:"aired_on,omitempty"`
+	ReleasedOn         string      `json:"released_on,omitempty"`
+	English            []string    `json:"english,omitempty"`
+	Japanese           []string    `json:"japanese,omitempty"`
+	Synonyms           []string    `json:"synonyms,omitempty"`
+	LicenseNameRu      string      `json:"license_name_ru,omitempty"`
+	Description        string      `json:"description,omitempty"`
+	DescriptionHTML    string      `json:"description_html,omitempty"`
+	DescriptionSource  string      `json:"description_source,omitempty"`
+	Franchise          string      `json:"franchise,omitempty"`
+	Favoured           bool        `json:"favoured,omitempty"`
+	Anons              bool        `json:"anons,omitempty"`
+	Ongoing            bool        `json:"ongoing,omitempty"`
+	ThreadID           int         `json:"thread_id,omitempty"`
+	TopicID            int         `json:"topic_id,omitempty"`
+	MyanimelistID      int         `json:"myanimelist_id,omitempty"`
+	RatesScoresStats   []Rate      `json:"rates_scores_stats,omitempty"`
+	RatesStatusesStats []Status    `json:"rates_statuses_stats,omitempty"`
+	Genres             []Genre     `json:"genres,omitempty"`
+	Publishers         []Publisher `json:"publishers,omitempty"`
+	UserRate           string      `json:"user_rate,omitempty"`
+}
+
+// Publisher ...
+type Publisher struct {
+	id   int
+	name string
 }
 
 // * Ranobes
 
 // Ranobe ...
 type Ranobe struct {
-	ID                 int      `json:"id,omitempty"`
-	Name               string   `json:"name,omitempty"`
-	Russian            string   `json:"russian,omitempty"`
-	Image              Image    `json:"image,omitempty"`
-	URL                string   `json:"url,omitempty"`
-	Kind               string   `json:"kind,omitempty"`
-	Score              string   `json:"score,omitempty"`
-	Status             string   `json:"status,omitempty"`
-	Volumes            int      `json:"volumes,omitempty"`
-	Chapters           int      `json:"chapters,omitempty"`
-	AiredOn            string   `json:"aired_on,omitempty"`
-	ReleasedOn         string   `json:"released_on,omitempty"`
-	English            []string `json:"english,omitempty"`
-	Japanese           []string `json:"japanese,omitempty"`
-	Synonyms           []string `json:"synonyms,omitempty"`
-	LicenseNameRu      string   `json:"license_name_ru,omitempty"`
-	Description        string   `json:"description,omitempty"`
-	DescriptionHTML    string   `json:"description_html,omitempty"`
-	DescriptionSource  string   `json:"description_source,omitempty"`
-	Franchise          string   `json:"franchise,omitempty"`
-	Favoured           bool     `json:"favoured,omitempty"`
-	Anons              string   `json:"anons,omitempty"`
-	Ongoing            string   `json:"ongoing,omitempty"`
-	ThreadID           int      `json:"thread_id,omitempty"`
-	TopicID            int      `json:"topic_id,omitempty"`
-	MyanimelistID      int      `json:"myanimelist_id,omitempty"`
-	RatesScoresStats   []string `json:"rates_scores_stats,omitempty"`
-	RatesStatusesStats []string `json:"rates_statuses_stats,omitempty"`
-	Genres             []string `json:"genres,omitempty"`
-	Publishers         []string `json:"publishers,omitempty"`
-	UserRate           string   `json:"user_rate,omitempty"`
+	ID                 int         `json:"id,omitempty"`
+	Name               string      `json:"name,omitempty"`
+	Russian            string      `json:"russian,omitempty"`
+	Image              Image       `json:"image,omitempty"`
+	URL                string      `json:"url,omitempty"`
+	Kind               string      `json:"kind,omitempty"`
+	Score              string      `json:"score,omitempty"`
+	Status             string      `json:"status,omitempty"`
+	Volumes            int         `json:"volumes,omitempty"`
+	Chapters           int         `json:"chapters,omitempty"`
+	AiredOn            string      `json:"aired_on,omitempty"`
+	ReleasedOn         string      `json:"released_on,omitempty"`
+	English            []string    `json:"english,omitempty"`
+	Japanese           []string    `json:"japanese,omitempty"`
+	Synonyms           []string    `json:"synonyms,omitempty"`
+	LicenseNameRu      string      `json:"license_name_ru,omitempty"`
+	Description        string      `json:"description,omitempty"`
+	DescriptionHTML    string      `json:"description_html,omitempty"`
+	DescriptionSource  string      `json:"description_source,omitempty"`
+	Franchise          string      `json:"franchise,omitempty"`
+	Favoured           bool        `json:"favoured,omitempty"`
+	Anons              bool        `json:"anons,omitempty"`
+	Ongoing            bool        `json:"ongoing,omitempty"`
+	ThreadID           int         `json:"thread_id,omitempty"`
+	TopicID            int         `json:"topic_id,omitempty"`
+	MyanimelistID      int         `json:"myanimelist_id,omitempty"`
+	RatesScoresStats   []Rate      `json:"rates_scores_stats,omitempty"`
+	RatesStatusesStats []Status    `json:"rates_statuses_stats,omitempty"`
+	Genres             []Genre     `json:"genres,omitempty"`
+	Publishers         []Publisher `json:"publishers,omitempty"`
+	UserRate           string      `json:"user_rate,omitempty"`
 }
