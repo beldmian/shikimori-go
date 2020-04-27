@@ -1,5 +1,9 @@
 package shikimorigo
 
+import (
+	"net/http"
+)
+
 /*
 	! Shikimori API v1
 	TODO: Support v2
@@ -189,4 +193,48 @@ type Ranobe struct {
 	Genres             []Genre     `json:"genres,omitempty"`
 	Publishers         []Publisher `json:"publishers,omitempty"`
 	UserRate           string      `json:"user_rate,omitempty"`
+}
+
+// User ...
+type User struct {
+	ID           int    `json:"id,omitempty"`
+	Nickname     string `json:"nickname,omitempty"`
+	Avatar       string `json:"avatar,omitempty"`
+	Image        Image  `json:"image,omitempty"`
+	LastOnlineAt string `json:"last_online_at,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Sex          string `json:"sex,omitempty"`
+	Website      string `json:"website,omitempty"`
+	BirthOn      string `json:"birth_on,omitempty"`
+	Locale       string `json:"locale,omitempty"`
+	Client       *http.Client
+}
+
+// AvatarImage ...
+type AvatarImage struct {
+	X160 string `json:"x_160,omitempty"`
+	X148 string `json:"x_148,omitempty"`
+	X80  string `json:"x_80,omitempty"`
+	X64  string `json:"x_64,omitempty"`
+	X48  string `json:"x_48,omitempty"`
+	X32  string `json:"x_32,omitempty"`
+	X16  string `json:"x_16,omitempty"`
+}
+
+// UserRate ...
+type UserRate struct {
+	ID         int    `json:"id"`
+	UserID     int    `json:"user_id"`
+	TargetID   int    `json:"target_id"`
+	TargetType string `json:"target_type"`
+	Score      int    `json:"score"`
+	Status     string `json:"status"`
+	Rewatches  int    `json:"rewatches"`
+	Episodes   int    `json:"episodes"`
+	Volumes    int    `json:"volumes"`
+	Chapters   int    `json:"chapters"`
+	Text       string `json:"text,omitempty"`
+	TextHTML   string `json:"text_html,omitempty"`
+	CreatedAt  string `json:"created_at"`
+	UpdatedAt  string `json:"updated_at"`
 }

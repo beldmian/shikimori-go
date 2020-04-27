@@ -1,12 +1,16 @@
 package shikimorigo
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/skratchdot/open-golang/open"
+	"golang.org/x/oauth2"
 )
 
 // * Anime
@@ -291,4 +295,93 @@ func GetRanobeRelatedObjects(id int) ([]RelatedObject, error) {
 		return []RelatedObject{}, err
 	}
 	return relatedobject, nil
+}
+
+// Auth ...
+func Auth(ClientID, ClientSecret string) (User, error) {
+	ctx := context.Background()
+	conf := &oauth2.Config{
+		ClientID:     ClientID,
+		ClientSecret: ClientSecret,
+		Scopes:       []string{"user_rates"},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  "https://shikimori.one/oauth/authorize",
+			TokenURL: "https://shikimori.one/oauth/token",
+		},
+	}
+	param := oauth2.SetAuthURLParam("grant_type", "authorization_code")
+	redir := oauth2.SetAuthURLParam("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
+	url := conf.AuthCodeURL("state", param, redir)
+	fmt.Printf("Visit the URL for the auth dialog: %v \n", url)
+
+	open.Run(url)
+
+	var code string
+	if _, err := fmt.Scan(&code); err != nil {
+		return User{}, err
+	}
+	tok, err := conf.Exchange(ctx, code, redir)
+	if err != nil {
+		return User{}, err
+	}
+
+	req, err := http.NewRequest("GET", "https://shikimori.one/api/users/whoami", nil)
+	if err != nil {
+		return User{}, err
+	}
+	req.Header.Set("User-Agent", "ShikiCLI")
+	req.Header.Set("Authorization", "Bearer "+tok.AccessToken)
+
+	clientTemp := &http.Client{}
+	respTemp, err := clientTemp.Do(req)
+	if err != nil {
+		return User{}, err
+	}
+	bodyTemp, err := ioutil.ReadAll(respTemp.Body)
+	if err != nil {
+		return User{}, err
+	}
+
+	var user User
+	if err := json.Unmarshal(bodyTemp, &user); err != nil {
+		return User{}, err
+	}
+
+	client := conf.Client(ctx, tok)
+	user.Client = client
+	return user, nil
+}
+
+// GetRateByID ...
+func (u User) GetRateByID(id int) (UserRate, error) {
+	resp, err := u.Client.Get("https://shikimori.one/api/v2/user_rates" + strconv.Itoa(id))
+	if err != nil {
+		return UserRate{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return UserRate{}, err
+	}
+	var rate UserRate
+	if err := json.Unmarshal(body, &rate); err != nil {
+		return UserRate{}, err
+	}
+	return rate, nil
+}
+
+// GetRates ...
+func (u User) GetRates() ([]UserRate, error) {
+	resp, err := u.Client.Get("https://shikimori.one/api/v2/user_rates")
+	if err != nil {
+		return []UserRate{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []UserRate{}, err
+	}
+	var rate []UserRate
+	if err := json.Unmarshal(body, &rate); err != nil {
+		return []UserRate{}, err
+	}
+	return rate, nil
 }
