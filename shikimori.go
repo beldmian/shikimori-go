@@ -314,7 +314,9 @@ func Auth(ClientID, ClientSecret string) (User, error) {
 	url := conf.AuthCodeURL("state", param, redir)
 	fmt.Printf("Visit the URL for the auth dialog: %v \n", url)
 
-	open.Run(url)
+	if err := open.Run(url); err != nil {
+		return User{}, err
+	}
 
 	var code string
 	if _, err := fmt.Scan(&code); err != nil {

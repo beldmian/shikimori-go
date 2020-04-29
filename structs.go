@@ -154,8 +154,8 @@ type Manga struct {
 
 // Publisher ...
 type Publisher struct {
-	id   int
-	name string
+	ID   int
+	Name string
 }
 
 // * Ranobes
